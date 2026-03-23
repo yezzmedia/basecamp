@@ -31,12 +31,10 @@ update_tool() {
     echo "🔄 Updating $cmd..."
     case $cmd in
         composer)
-            # Try normal update, fallback to sudo if needed
             composer self-update || sudo composer self-update || echo "❌ Failed to update composer."
             ;;
         laravel)
             echo "🚀 Updating Laravel environment via php.new..."
-            # Using the official modern installer from php.new
             /bin/bash -c "$(curl -fsSL https://php.new/install/linux)" || echo "❌ Failed to update via php.new."
             ;;
         npm)
@@ -62,7 +60,6 @@ check_dependency() {
         case $cmd in
             composer)
                 local latest
-                # Fetch the latest version tag from GitHub API for Composer
                 latest=$(curl -s https://api.github.com/repos/composer/composer/releases/latest | grep -oE '"tag_name": "[^"]+"' | cut -d'"' -f4 || echo "")
                 if [ ! -z "$latest" ]; then
                     local current
@@ -94,7 +91,6 @@ check_dependency() {
                 fi
                 ;;
             laravel)
-                # Check for Laravel installer updates via composer global
                 local latest
                 latest=$(composer global show laravel/installer --latest 2>/dev/null | grep 'latest' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1 || echo "")
                 if [ ! -z "$latest" ]; then
@@ -190,34 +186,19 @@ echo "✅ System ready. Launching installer..."
 echo ""
 
 # --- EXTRACTION LOGIC ---
-# We must ensure that the script is readable from disk ($0).
-# Piped execution (like 'curl | bash') is not supported for embedded payloads.
-if [ ! -f "$0" ]; then
-    echo "❌ Error: Basecamp cannot be executed directly from a pipe."
-    echo "💡 Please use the official one-liner:"
-    echo "   curl -fsSL https://raw.githubusercontent.com/yezzmedia/basecamp/main/dist/basecamp.sh -o basecamp.sh && bash basecamp.sh"
-    exit 1
-fi
-
-PAYLOAD_START=$(awk '/^__ARCHIVE__/ {print NR + 1; exit 0;}' "$0")
-
-if [ -z "$PAYLOAD_START" ]; then
-    echo "❌ Error: Could not find embedded payload in the script."
-    exit 1
-fi
-
 TMP_DIR=$(mktemp -d -t basecamp.XXXXXX)
 cleanup() {
     rm -rf "$TMP_DIR"
 }
 trap cleanup EXIT
 
-tail -n +"$PAYLOAD_START" "$0" | base64 --decode > "$TMP_DIR/installer.mjs"
+# We use a HEREDOC to extract the payload. This is compatible with 
+# piped execution (like 'curl | bash') and string execution (bash -c).
+base64 --decode << 'BASECAMP_PAYLOAD' > "$TMP_DIR/installer.mjs"
+{{PAYLOAD}}
+BASECAMP_PAYLOAD
 
 # --- EXECUTION ---
 node "$TMP_DIR/installer.mjs" "$@"
 
 exit $?
-
-# --- PAYLOAD MARKER ---
-__ARCHIVE__
