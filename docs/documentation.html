@@ -98,12 +98,12 @@
             <h3 class="text-white font-bold mb-4">Command Examples</h3>
             <div class="space-y-4">
                 <div>
-                    <p class="text-sm text-slate-500 mb-2">Fully silent install with defaults:</p>
-                    <pre><code>./basecamp.sh --yes</code></pre>
+                    <p class="text-sm text-slate-500 mb-2">Fully interactive install via URL:</p>
+                    <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/yezzmedia/basecamp/main/dist/basecamp.sh)"</code></pre>
                 </div>
                 <div>
-                    <p class="text-sm text-slate-500 mb-2">Specific template and custom packages:</p>
-                    <pre><code>./basecamp.sh -y --template=ai --packages=pulse,horizon</code></pre>
+                    <p class="text-sm text-slate-500 mb-2">Non-interactive install with specific template:</p>
+                    <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/yezzmedia/basecamp/main/dist/basecamp.sh)" -- --yes --template=full</code></pre>
                 </div>
                 <div>
                     <p class="text-sm text-slate-500 mb-2">Verbose mode for debugging:</p>
