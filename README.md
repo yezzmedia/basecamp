@@ -28,7 +28,7 @@ Basecamp uses a "build" approach. The interactive logic is written in modern Nod
 ### Setup
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/basecamp.git
+   git clone https://github.com/yezzmedia/basecamp.git
    cd basecamp
    ```
 2. Install dependencies:
