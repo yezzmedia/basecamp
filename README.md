@@ -1,6 +1,8 @@
 # ⛺ Basecamp
 
-Basecamp is a modern, single-file cross-platform terminal installer for rapidly bootstrapping Laravel 11 projects. It features an embedded Node.js runtime to provide a beautiful, interactive CLI experience while remaining a portable Bash script.
+Basecamp is a modern, single-file cross-platform terminal installer for rapidly bootstrapping Laravel projects. It features an embedded Node.js runtime to provide a beautiful, interactive CLI experience while remaining a portable Bash script.
+
+**Official Website & Documentation:** [https://yezzmedia.github.io/basecamp/](https://yezzmedia.github.io/basecamp/)
 
 ## 🚀 Quick Start
 

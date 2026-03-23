@@ -48,7 +48,7 @@
         </p>
 
         <!-- Command Prompt Box -->
-        <div id="quickstart" class="max-w-3xl mx-auto bg-slate-900 rounded-xl border border-slate-800 p-2 shadow-2xl mb-12">
+        <div id="quickstart" class="max-w-3xl mx-auto bg-slate-900 rounded-xl border border-slate-800 p-2 shadow-2xl mb-12 relative group">
             <div class="flex items-center justify-between px-4 py-3 bg-slate-800/50 rounded-t-lg border-b border-slate-800">
                 <div class="flex space-x-2">
                     <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
@@ -57,10 +57,26 @@
                 </div>
                 <span class="text-xs font-mono text-slate-500">terminal — bash</span>
             </div>
-            <div class="p-6 text-left font-mono text-sm md:text-base leading-relaxed overflow-x-auto whitespace-nowrap">
-                <span class="text-emerald-400">$</span> <span class="text-slate-100">curl -fsSL https://raw.githubusercontent.com/yezzmedia/basecamp/main/dist/basecamp.sh -o basecamp.sh && bash basecamp.sh</span>
+            <div class="p-6 text-left font-mono text-sm md:text-base leading-relaxed overflow-x-auto whitespace-nowrap pr-24">
+                <span class="text-emerald-400">$</span> <span id="install-command" class="text-slate-100">curl -fsSL https://raw.githubusercontent.com/yezzmedia/basecamp/main/dist/basecamp.sh | bash</span>
             </div>
+            <!-- Copy Button -->
+            <button onclick="copyToClipboard()" class="absolute top-14 right-6 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-lg border border-slate-700 transition flex items-center space-x-2">
+                <span id="copy-text">Copy</span>
+            </button>
         </div>
+
+        <script>
+            function copyToClipboard() {
+                const text = document.getElementById('install-command').innerText;
+                navigator.clipboard.writeText(text).then(() => {
+                    const btnText = document.getElementById('copy-text');
+                    btnText.innerText = 'Copied!';
+                    setTimeout(() => { btnText.innerText = 'Copy'; }, 2000);
+                });
+            }
+        </script>
+
 
         <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
             <a href="documentation.html" class="px-8 py-4 bg-white text-slate-900 font-bold rounded-full hover:bg-slate-200 transition shadow-lg shadow-white/10 w-full sm:w-auto text-center">
