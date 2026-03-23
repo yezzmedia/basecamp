@@ -31,13 +31,12 @@ update_tool() {
     echo "🔄 Updating $cmd..."
     case $cmd in
         composer)
+            # Try normal update, fallback to sudo if needed
             composer self-update || sudo composer self-update || echo "❌ Failed to update composer."
             ;;
         laravel)
             echo "🚀 Updating Laravel environment via php.new..."
             # Using the official modern installer from php.new
-            # This is the most reliable way to ensure the Laravel installer and 
-            # environment are fully up to date.
             /bin/bash -c "$(curl -fsSL https://php.new/install/linux)" || echo "❌ Failed to update via php.new."
             ;;
         npm)
@@ -59,7 +58,7 @@ check_dependency() {
         version_info=$("$cmd" "$version_flag" 2>&1 | head -n 1)
         echo "✅ Found ($version_info)"
         
-        # --- PERFORM UPDATE CHECKS FOR ECOSYSTEM TOOLS ---
+        # --- ALWAYS PERFORM UPDATE CHECKS ---
         case $cmd in
             composer)
                 local latest
@@ -72,7 +71,11 @@ check_dependency() {
                         echo "     💡 Update available: $current -> $latest"
                         UPDATES_AVAILABLE=1
                         CAN_AUTO_UPDATE_LIST="$CAN_AUTO_UPDATE_LIST composer"
+                    elif [[ "$VERBOSE" -eq 1 ]]; then
+                        echo "     ✨ Composer is up to date."
                     fi
+                elif [[ "$VERBOSE" -eq 1 ]]; then
+                    echo "     ✨ Composer is up to date."
                 fi
                 ;;
             npm)
@@ -85,10 +88,13 @@ check_dependency() {
                         echo "     💡 Update available: $current -> $latest"
                         UPDATES_AVAILABLE=1
                         CAN_AUTO_UPDATE_LIST="$CAN_AUTO_UPDATE_LIST npm"
+                    elif [[ "$VERBOSE" -eq 1 ]]; then
+                        echo "     ✨ npm is up to date."
                     fi
                 fi
                 ;;
             laravel)
+                # Check for Laravel installer updates via composer global
                 local latest
                 latest=$(composer global show laravel/installer --latest 2>/dev/null | grep 'latest' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1 || echo "")
                 if [ ! -z "$latest" ]; then
@@ -98,7 +104,11 @@ check_dependency() {
                         echo "     💡 Update available: $current -> $latest"
                         UPDATES_AVAILABLE=1
                         CAN_AUTO_UPDATE_LIST="$CAN_AUTO_UPDATE_LIST laravel"
+                    elif [[ "$VERBOSE" -eq 1 ]]; then
+                        echo "     ✨ Laravel installer is up to date."
                     fi
+                elif [[ "$VERBOSE" -eq 1 ]]; then
+                    echo "     ✨ Laravel installer is up to date."
                 fi
                 ;;
         esac
@@ -128,7 +138,6 @@ check_dependency "git" "--version"
 check_dependency "base64" "--version"
 
 # --- SECURITY AUDIT ---
-# Check for vulnerabilities in global composer packages (like laravel/installer)
 if command -v "composer" &> /dev/null; then
     printf "  %-12s " "Auditing..."
     if composer global audit --no-dev -q 2>/dev/null; then
@@ -167,7 +176,6 @@ if [ "$UPDATES_AVAILABLE" -ne 0 ]; then
         fi
     fi
 
-    # RESTART SCRIPT IF UPDATED
     if [ "$DID_UPDATE" -eq 1 ]; then
         echo "✅ Updates applied successfully."
         echo "🔄 Restarting Basecamp to apply changes..."
@@ -182,13 +190,28 @@ echo "✅ System ready. Launching installer..."
 echo ""
 
 # --- EXTRACTION LOGIC ---
+# We must ensure that the script is readable from disk ($0).
+# Piped execution (like 'curl | bash') is not supported for embedded payloads.
+if [ ! -f "$0" ]; then
+    echo "❌ Error: Basecamp cannot be executed directly from a pipe."
+    echo "💡 Please use the official one-liner:"
+    echo "   curl -fsSL https://raw.githubusercontent.com/yezzmedia/basecamp/main/dist/basecamp.sh -o basecamp.sh && bash basecamp.sh"
+    exit 1
+fi
+
+PAYLOAD_START=$(awk '/^__ARCHIVE__/ {print NR + 1; exit 0;}' "$0")
+
+if [ -z "$PAYLOAD_START" ]; then
+    echo "❌ Error: Could not find embedded payload in the script."
+    exit 1
+fi
+
 TMP_DIR=$(mktemp -d -t basecamp.XXXXXX)
 cleanup() {
     rm -rf "$TMP_DIR"
 }
 trap cleanup EXIT
 
-PAYLOAD_START=$(awk '/^__ARCHIVE__/ {print NR + 1; exit 0;}' "$0")
 tail -n +"$PAYLOAD_START" "$0" | base64 --decode > "$TMP_DIR/installer.mjs"
 
 # --- EXECUTION ---

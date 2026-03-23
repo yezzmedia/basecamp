@@ -7,8 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- Initial setup script scaffolding (`Basecamp`) to replace legacy `Instalar`.
-- Embedded Node.js runtime inside a single-file Bash script for cross-platform compatibility.
-- Interactive prompts for Project Name, Database Type, and Optional Packages (Filament, Debugbar, IDE Helper).
-- Build process using `esbuild` to minify and bundle the Node script.
+## [0.1.1] - 2026-03-23
+
+### Fixed
+- Fixed `tail` error during piped execution by enforcing disk-based execution.
+- Added explicit check for `__ARCHIVE__` marker in the wrapper script.
+
+### Changed
+- Updated official installation command to use `-o basecamp.sh` for better reliability and interactivity.
+- Improved documentation with clearer CLI examples and platform requirements.
+
+## [0.1.0] - 2026-03-23
