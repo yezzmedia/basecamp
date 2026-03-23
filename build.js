@@ -49,10 +49,17 @@ async function build() {
     /**
      * STEP 5: WRITING & PERMISSIONS
      * Save the final script to 'dist/basecamp.sh' and make it executable.
+     * Also save a copy to 'docs/install' to provide a short URL via GitHub Pages.
      */
     fs.writeFileSync('dist/basecamp.sh', finalScript, { mode: 0o755 });
+    
+    // Ensure docs directory exists (it should, as it contains our website)
+    if (!fs.existsSync('docs')) {
+        fs.mkdirSync('docs');
+    }
+    fs.writeFileSync('docs/install', finalScript, { mode: 0o755 });
 
-    console.log('Build complete! Output: dist/basecamp.sh');
+    console.log('Build complete! Output: dist/basecamp.sh and docs/install');
 }
 
 build().catch(console.error);
