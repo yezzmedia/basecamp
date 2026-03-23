@@ -15,9 +15,9 @@ describe('Basecamp Distribution', () => {
         expect(content.startsWith('#!/usr/bin/env bash')).toBe(true);
     });
 
-    it('dist/basecamp.sh should contain the archive marker', () => {
+    it('dist/basecamp.sh should contain the payload marker', () => {
         const content = readFileSync(distPath, 'utf-8');
-        expect(content.includes('__ARCHIVE__')).toBe(true);
+        expect(content.includes('BASECAMP_PAYLOAD')).toBe(true);
     });
 
     it('dist/basecamp.sh should have execute permissions', () => {
