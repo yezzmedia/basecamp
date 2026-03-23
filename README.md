@@ -9,9 +9,8 @@ Basecamp is a modern, single-file cross-platform terminal installer for rapidly 
 Run Basecamp directly from the terminal without downloading anything manually:
 
 ```bash
-curl -fsSL https://basecamp-installer.com/basecamp.sh | bash
+curl -fsSL https://yezzmedia.github.io/basecamp/install | bash
 ```
-> *(Replace URL with the actual deployment URL once the website is live)*
 
 ### Features
 - **Cross-Platform**: Runs on Linux, macOS, and Windows (via Git Bash / WSL).
