@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Basecamp Laravel Installer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg {
+            background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%);
+        }
+        .glass {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        pre {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-x: auto;
+        }
+        code { font-family: 'Fira Code', monospace; color: #38bdf8; }
+    </style>
+</head>
+<body class="gradient-bg text-slate-200 min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="max-w-6xl mx-auto px-6 py-8 flex justify-between items-center">
+        <a href="index.html" class="flex items-center space-x-3">
+            <span class="text-3xl">⛺</span>
+            <span class="text-2xl font-extrabold tracking-tight text-white italic">BASECAMP</span>
+        </a>
+        <div class="flex space-x-8 text-sm font-medium">
+            <a href="index.html" class="hover:text-blue-400 transition">Back to Home</a>
+            <a href="https://github.com/your-username/basecamp" target="_blank" class="hover:text-blue-400 transition">GitHub</a>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+        <h1 class="text-5xl font-black text-white mb-8 tracking-tight">Documentation</h1>
+        
+        <!-- Introduction -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold text-blue-400 mb-4">What is Basecamp?</h2>
+            <p class="text-slate-400 leading-relaxed mb-4">
+                Basecamp is a professional bootstrapping tool for Laravel developers. It replaces the repetitive manual steps of setting up a new project with a streamlined, interactive, or fully automated experience.
+            </p>
+            <p class="text-slate-400 leading-relaxed">
+                Built as a hybrid script, it uses a <strong>Bash wrapper</strong> for universal compatibility and a <strong>Node.js core</strong> for a rich, interactive CLI experience.
+            </p>
+        </section>
+
+        <!-- The Workflow -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold text-blue-400 mb-6">The Installation Workflow</h2>
+            <div class="space-y-8">
+                <div class="flex items-start space-x-4">
+                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white shrink-0">1</div>
+                    <div>
+                        <h3 class="text-white font-bold mb-2">System Verification</h3>
+                        <p class="text-sm text-slate-500">The script checks for PHP, Composer, Node.js, NPM, and Git. It even checks for tool updates to ensure your environment is ready.</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-4">
+                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white shrink-0">2</div>
+                    <div>
+                        <h3 class="text-white font-bold mb-2">Template Selection</h3>
+                        <p class="text-sm text-slate-500">Choose from pre-defined stacks or go "Custom" for full manual control.</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-4">
+                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white shrink-0">3</div>
+                    <div>
+                        <h3 class="text-white font-bold mb-2">Automated Execution</h3>
+                        <p class="text-sm text-slate-500">Basecamp runs <code>laravel new</code>, modifies configurations, installs Composer packages, and runs initial migrations.</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-4">
+                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white shrink-0">4</div>
+                    <div>
+                        <h3 class="text-white font-bold mb-2">Health Checks & Finalizing</h3>
+                        <p class="text-sm text-slate-500">Sets directory permissions, links storage, and creates the first Git commit. A detailed summary with version numbers is presented at the end.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Automation & CLI -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold text-blue-400 mb-6">Advanced Automation</h2>
+            <p class="text-slate-400 leading-relaxed mb-6">
+                Basecamp shines in automated environments like CI/CD pipelines or local setup scripts.
+            </p>
+            <h3 class="text-white font-bold mb-4">Command Examples</h3>
+            <div class="space-y-4">
+                <div>
+                    <p class="text-sm text-slate-500 mb-2">Fully silent install with defaults:</p>
+                    <pre><code>./basecamp.sh --yes</code></pre>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-500 mb-2">Specific template and custom packages:</p>
+                    <pre><code>./basecamp.sh -y --template=ai --packages=pulse,horizon</code></pre>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-500 mb-2">Verbose mode for debugging:</p>
+                    <pre><code>./basecamp.sh --verbose</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Package List -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold text-blue-400 mb-6">Supported Packages</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="glass p-4 rounded-lg">
+                    <h4 class="text-white font-bold">Filament v5</h4>
+                    <p class="text-xs text-slate-500">The elegant TALL-stack admin panel.</p>
+                </div>
+                <div class="glass p-4 rounded-lg">
+                    <h4 class="text-white font-bold">Laravel AI SDK</h4>
+                    <p class="text-xs text-slate-500">Unified API for OpenAI and other LLMs.</p>
+                </div>
+                <div class="glass p-4 rounded-lg">
+                    <h4 class="text-white font-bold">Pulse & Horizon</h4>
+                    <p class="text-xs text-slate-500">Monitoring and Queue management dashboard.</p>
+                </div>
+                <div class="glass p-4 rounded-lg">
+                    <h4 class="text-white font-bold">Spatie Essentials</h4>
+                    <p class="text-xs text-slate-500">Backup, Media Library, and Activity Log.</p>
+                </div>
+                <div class="glass p-4 rounded-lg">
+                    <h4 class="text-white font-bold">Pest & Boost</h4>
+                    <p class="text-xs text-slate-500">Modern testing and agent-friendly scaffolding.</p>
+                </div>
+                <div class="glass p-4 rounded-lg">
+                    <h4 class="text-white font-bold">Volt & Socialite</h4>
+                    <p class="text-xs text-slate-500">Single-file components and OAuth auth.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Troubleshooting -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold text-red-400 mb-4">Troubleshooting</h2>
+            <div class="space-y-4">
+                <details class="glass p-4 rounded-lg cursor-pointer">
+                    <summary class="font-bold text-white">"laravel new" command not found</summary>
+                    <p class="text-sm text-slate-500 mt-2">Basecamp will automatically fallback to <code>composer create-project</code>. You don't need to do anything, but some advanced flags might be skipped.</p>
+                </details>
+                <details class="glass p-4 rounded-lg cursor-pointer">
+                    <summary class="font-bold text-white">Permission Denied on basecamp.sh</summary>
+                    <p class="text-sm text-slate-500 mt-2">Run <code>chmod +x basecamp.sh</code> to make the script executable before running it.</p>
+                </details>
+                <details class="glass p-4 rounded-lg cursor-pointer">
+                    <summary class="font-bold text-white">Windows execution errors</summary>
+                    <p class="text-sm text-slate-500 mt-2">Ensure you are using <strong>WSL2</strong> or <strong>Git Bash</strong>. PowerShell and CMD are not natively supported for .sh scripts.</p>
+                </details>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="max-w-6xl mx-auto px-6 py-12 border-t border-slate-800/50 text-center text-slate-500 text-sm">
+        <p>© 2026 Basecamp Installer. Build with ❤️.</p>
+    </footer>
+
+</body>
+</html>

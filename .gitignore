@@ -1,0 +1,11 @@
+node_modules/
+dist/installer.bundle.mjs
+basecamp-smoke-test-app/
+.DS_Store
+.env
+.idea/
+.vscode/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.vitest/

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basecamp - The Modern Laravel Installer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg {
+            background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%);
+        }
+        .glass {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px border rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="gradient-bg text-slate-200 min-h-screen">
+
+    <!-- Header / Navigation -->
+    <nav class="max-w-6xl mx-auto px-6 py-8 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <span class="text-3xl">⛺</span>
+            <span class="text-2xl font-extrabold tracking-tight text-white italic">BASECAMP</span>
+        </div>
+        <div class="hidden md:flex space-x-8 text-sm font-medium">
+            <a href="#features" class="hover:text-blue-400 transition">Features</a>
+            <a href="#templates" class="hover:text-blue-400 transition">Templates</a>
+            <a href="documentation.html" class="hover:text-emerald-400 transition">Documentation</a>
+            <a href="#requirements" class="hover:text-blue-400 transition">Requirements</a>
+            <a href="#cli" class="hover:text-blue-400 transition">CLI Reference</a>
+            <a href="https://github.com/your-username/basecamp" target="_blank" class="hover:text-blue-400 transition">GitHub</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="max-w-6xl mx-auto px-6 pt-20 pb-32 text-center">
+        <h1 class="text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter leading-tight">
+            Bootstrap Laravel <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">in Seconds.</span>
+        </h1>
+        <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-12">
+            The modern, modular, single-file cross-platform installer for Laravel 11+. 
+            Beautiful CLI, powerful templates, and everything you need to start building immediately.
+        </p>
+
+        <!-- Command Prompt Box -->
+        <div id="quickstart" class="max-w-3xl mx-auto bg-slate-900 rounded-xl border border-slate-800 p-2 shadow-2xl mb-12">
+            <div class="flex items-center justify-between px-4 py-3 bg-slate-800/50 rounded-t-lg border-b border-slate-800">
+                <div class="flex space-x-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                </div>
+                <span class="text-xs font-mono text-slate-500">terminal — bash</span>
+            </div>
+            <div class="p-6 text-left font-mono text-sm md:text-base leading-relaxed overflow-x-auto whitespace-nowrap">
+                <span class="text-emerald-400">$</span> <span class="text-slate-100">curl -fsSL https://basecamp-installer.com/basecamp.sh | bash</span>
+            </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
+            <a href="documentation.html" class="px-8 py-4 bg-white text-slate-900 font-bold rounded-full hover:bg-slate-200 transition shadow-lg shadow-white/10 w-full sm:w-auto text-center">
+                Get Started
+            </a>
+            <a href="https://github.com/your-username/basecamp" target="_blank" class="px-8 py-4 bg-slate-800 text-white font-bold rounded-full hover:bg-slate-700 transition w-full sm:w-auto border border-slate-700 text-center">
+                GitHub
+            </a>
+        </div>
+    </header>
+
+    <!-- Features Grid -->
+    <section id="features" class="max-w-6xl mx-auto px-6 py-24 border-t border-slate-800/50">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-left">
+            <!-- Feature 1 -->
+            <div class="group">
+                <div class="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition duration-300">⚡</div>
+                <h3 class="text-xl font-bold text-white mb-3">Lightning Fast</h3>
+                <p class="text-slate-400 leading-relaxed">
+                    Zero manual configuration. Choose your template, and Basecamp handles everything from project creation to frontend builds and Git initialization.
+                </p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="group">
+                <div class="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition duration-300">📦</div>
+                <h3 class="text-xl font-bold text-white mb-3">Filament v5 Ready</h3>
+                <p class="text-slate-400 leading-relaxed">
+                    Automatically installs and configures Filament v5, creates your admin user, and sets up all necessary providers and assets.
+                </p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="group">
+                <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition duration-300">🛡️</div>
+                <h3 class="text-xl font-bold text-white mb-3">Fully Automated</h3>
+                <p class="text-slate-400 leading-relaxed">
+                    Use CLI flags for CI/CD or scripts. Support for non-interactive runs, project naming, database selection, and custom package lists.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Templates Section -->
+    <section id="templates" class="max-w-6xl mx-auto px-6 py-24 border-t border-slate-800/50">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-white mb-4">Project Templates</h2>
+            <p class="text-slate-400">Choose the perfect starting point for your next big idea.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Template 1 -->
+            <div class="glass p-8 rounded-2xl border border-slate-800 hover:border-blue-500/50 transition">
+                <h3 class="text-xl font-bold text-white mb-2">Basecamp</h3>
+                <p class="text-sm text-slate-500 mb-6">The Balanced Default</p>
+                <ul class="text-sm space-y-3 mb-8">
+                    <li class="flex items-center text-slate-400">✅ Filament v5</li>
+                    <li class="flex items-center text-slate-400">✅ Pest & Boost</li>
+                    <li class="flex items-center text-slate-400">✅ Livewire & NPM</li>
+                </ul>
+            </div>
+            <!-- Template 2 -->
+            <div class="glass p-8 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition">
+                <h3 class="text-xl font-bold text-white mb-2">Minimal</h3>
+                <p class="text-sm text-slate-500 mb-6">Barebones Laravel</p>
+                <ul class="text-sm space-y-3 mb-8">
+                    <li class="flex items-center text-slate-400">✅ Essential Only</li>
+                    <li class="flex items-center text-slate-400">✅ Pest & Git</li>
+                    <li class="flex items-center text-slate-400">✅ Clean Slate</li>
+                </ul>
+            </div>
+            <!-- Template 3 -->
+            <div class="glass p-8 rounded-2xl border border-slate-800 hover:border-purple-500/50 transition">
+                <h3 class="text-xl font-bold text-white mb-2">AI Expert</h3>
+                <p class="text-sm text-slate-500 mb-6">For AI Builders</p>
+                <ul class="text-sm space-y-3 mb-8">
+                    <li class="flex items-center text-slate-400">✅ Official AI SDK</li>
+                    <li class="flex items-center text-slate-400">✅ OpenAI Client</li>
+                    <li class="flex items-center text-slate-400">✅ Feature Flags</li>
+                </ul>
+            </div>
+            <!-- Template 4 -->
+            <div class="glass p-8 rounded-2xl border border-slate-800 hover:border-red-500/50 transition">
+                <h3 class="text-xl font-bold text-white mb-2">Full Stack Ops</h3>
+                <p class="text-sm text-slate-500 mb-6">Production Ready</p>
+                <ul class="text-sm space-y-3 mb-8">
+                    <li class="flex items-center text-slate-400">✅ Pulse & Horizon</li>
+                    <li class="flex items-center text-slate-400">✅ Satie Backups</li>
+                    <li class="flex items-center text-slate-400">✅ Media & Activity</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Requirements Section -->
+    <section id="requirements" class="max-w-6xl mx-auto px-6 py-24 border-t border-slate-800/50">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+                <h2 class="text-4xl font-bold text-white mb-6">Compatibility & Requirements</h2>
+                <p class="text-slate-400 mb-8 leading-relaxed">
+                    Basecamp is designed to run anywhere modern Laravel development happens. 
+                    The script automatically verifies your environment before starting.
+                </p>
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-4">
+                        <div class="text-blue-400 mt-1">🐧</div>
+                        <div>
+                            <h4 class="text-white font-semibold">Linux & macOS</h4>
+                            <p class="text-sm text-slate-500">Native support for all major distributions and Apple Silicon.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div class="text-blue-400 mt-1">🪟</div>
+                        <div>
+                            <h4 class="text-white font-semibold">Windows</h4>
+                            <p class="text-sm text-slate-500">Supported via <span class="text-slate-300">WSL2 (Recommended)</span> or <span class="text-slate-300">Git Bash</span>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-8 glass">
+                <h3 class="text-xl font-bold text-white mb-6">Technical Prerequisites</h3>
+                <ul class="space-y-4">
+                    <li class="flex justify-between items-center border-b border-slate-800 pb-3">
+                        <span class="text-slate-400">PHP Runtime</span>
+                        <span class="text-blue-400 font-mono">8.2+</span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-slate-800 pb-3">
+                        <span class="text-slate-400">Composer</span>
+                        <span class="text-blue-400 font-mono">2.x</span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-slate-800 pb-3">
+                        <span class="text-slate-400">Node.js / NPM</span>
+                        <span class="text-blue-400 font-mono">18+</span>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <span class="text-slate-400">Git</span>
+                        <span class="text-blue-400 font-mono">Required</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLI Reference Section -->
+    <section id="cli" class="max-w-6xl mx-auto px-6 py-24 border-t border-slate-800/50">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-white mb-4">CLI Reference</h2>
+            <p class="text-slate-400">Automate your workflow with powerful command-line arguments.</p>
+        </div>
+        <div class="bg-slate-900/50 rounded-2xl border border-slate-800 overflow-hidden">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-800/50 text-slate-300 text-sm uppercase tracking-wider">
+                        <th class="px-6 py-4">Argument</th>
+                        <th class="px-6 py-4">Description</th>
+                        <th class="px-6 py-4">Example</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm text-slate-400 divide-y divide-slate-800">
+                    <tr>
+                        <td class="px-6 py-4 font-mono text-emerald-400">-y, --yes</td>
+                        <td class="px-6 py-4">Enable non-interactive mode (skips all prompts)</td>
+                        <td class="px-6 py-4 font-mono text-slate-500">basecamp.sh --yes</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-4 font-mono text-emerald-400">--name</td>
+                        <td class="px-6 py-4">Set the project name and directory</td>
+                        <td class="px-6 py-4 font-mono text-slate-500">--name=my-app</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-4 font-mono text-emerald-400">--template</td>
+                        <td class="px-6 py-4">Choose a preset (basecamp, minimal, ai, full)</td>
+                        <td class="px-6 py-4 font-mono text-slate-500">--template=ai</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-4 font-mono text-emerald-400">--packages</td>
+                        <td class="px-6 py-4">Comma-separated list of extra packages</td>
+                        <td class="px-6 py-4 font-mono text-slate-500">--packages=pulse,horizon</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-4 font-mono text-emerald-400">--force</td>
+                        <td class="px-6 py-4">Force overwrite existing project directory</td>
+                        <td class="px-6 py-4 font-mono text-slate-500">--force</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="max-w-6xl mx-auto px-6 py-12 border-t border-slate-800/50 text-center text-slate-500 text-sm">
+        <p>© 2026 Basecamp Installer. Open source under MIT License.</p>
+        <p class="mt-2">Built with <span class="text-red-500/50">❤️</span> for the Laravel Community.</p>
+    </footer>
+
+</body>
+</html>
