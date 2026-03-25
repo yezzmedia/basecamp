@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-03-23
+
+### Fixed
+- Fixed interactive prompts automatically skipping/aborting when the script is executed via pipe (`curl ... | bash`) by correctly reattaching `stdin` to the terminal (`/dev/tty`).
+
 ## [0.1.4] - 2026-03-23
 
 ### Added
