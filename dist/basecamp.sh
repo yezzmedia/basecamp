@@ -26,21 +26,31 @@ echo "⛺ Basecamp - Starting system check..."
 echo "------------------------------------------------"
 
 # --- UPDATE HELPER ---
+# Performs updates for manageable tools.
+# Returns 0 on success, 1 on failure.
 update_tool() {
     local cmd=$1
     echo "🔄 Updating $cmd..."
     case $cmd in
         composer)
-            composer self-update || sudo composer self-update || echo "❌ Failed to update composer."
+            if composer self-update || sudo composer self-update; then
+                return 0
+            fi
             ;;
         laravel)
             echo "🚀 Updating Laravel environment via php.new..."
-            /bin/bash -c "$(curl -fsSL https://php.new/install/linux)" || echo "❌ Failed to update via php.new."
+            if /bin/bash -c "$(curl -fsSL https://php.new/install/linux)"; then
+                return 0
+            fi
             ;;
         npm)
-            npm install -g npm || sudo npm install -g npm || echo "❌ Failed to update npm."
+            if npm install -g npm || sudo npm install -g npm; then
+                return 0
+            fi
             ;;
     esac
+    echo "❌ Failed to update $cmd."
+    return 1
 }
 
 # --- SYSTEM CHECK HELPER ---
@@ -71,8 +81,6 @@ check_dependency() {
                     elif [[ "$VERBOSE" -eq 1 ]]; then
                         echo "     ✨ Composer is up to date."
                     fi
-                elif [[ "$VERBOSE" -eq 1 ]]; then
-                    echo "     ✨ Composer is up to date."
                 fi
                 ;;
             npm)
@@ -157,8 +165,9 @@ if [ "$UPDATES_AVAILABLE" -ne 0 ]; then
     DID_UPDATE=0
     if [ "$AUTO_UPDATE" -eq 1 ]; then
         for tool in $CAN_AUTO_UPDATE_LIST; do
-            update_tool "$tool"
-            DID_UPDATE=1
+            if update_tool "$tool"; then
+                DID_UPDATE=1
+            fi
         done
     else
         echo "💡 Some tools have updates available."
@@ -166,12 +175,14 @@ if [ "$UPDATES_AVAILABLE" -ne 0 ]; then
         read -r response
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
             for tool in $CAN_AUTO_UPDATE_LIST; do
-                update_tool "$tool"
-                DID_UPDATE=1
+                if update_tool "$tool"; then
+                    DID_UPDATE=1
+                fi
             done
         fi
     fi
 
+    # RESTART SCRIPT ONLY IF AT LEAST ONE UPDATE SUCCEEDED
     if [ "$DID_UPDATE" -eq 1 ]; then
         echo "✅ Updates applied successfully."
         echo "🔄 Restarting Basecamp to apply changes..."
@@ -180,6 +191,9 @@ if [ "$UPDATES_AVAILABLE" -ne 0 ]; then
         hash -r
         exec "$0" "$@"
     fi
+    
+    # If we are here, either updates were skipped or all failed.
+    # We continue without restarting to avoid infinite loops.
 fi
 
 echo "✅ System ready. Launching installer..."
@@ -199,6 +213,12 @@ dmFyIEd0PU9iamVjdC5jcmVhdGU7dmFyIGV0PU9iamVjdC5kZWZpbmVQcm9wZXJ0eTt2YXIgV3Q9T2Jq
 BASECAMP_PAYLOAD
 
 # --- EXECUTION ---
+# Re-attach stdin to the terminal if we are running from a pipe but have a terminal.
+# This fixes interactivity issues when users run: curl ... | bash
+if [ ! -t 0 ] && [ -t 1 ]; then
+    exec < /dev/tty
+fi
+
 node "$TMP_DIR/installer.mjs" "$@"
 
 exit $?
