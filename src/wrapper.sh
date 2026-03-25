@@ -7,6 +7,14 @@
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
+# --- PIPE INTERACTIVITY FIX ---
+# If stdin is not a TTY (e.g. running via curl | bash), we MUST re-attach 
+# stdin to the physical terminal immediately. Otherwise, 'read' commands 
+# and interactive prompts will consume the script's own body from the pipe!
+if [ ! -t 0 ] && [ -t 1 ]; then
+    exec < /dev/tty
+fi
+
 # --- CONFIGURATION ---
 MIN_PHP_VERSION="8.2"
 MIN_NODE_VERSION="18"
@@ -26,8 +34,6 @@ echo "⛺ Basecamp - Starting system check..."
 echo "------------------------------------------------"
 
 # --- UPDATE HELPER ---
-# Performs updates for manageable tools.
-# Returns 0 on success, 1 on failure.
 update_tool() {
     local cmd=$1
     echo "🔄 Updating $cmd..."
@@ -182,18 +188,22 @@ if [ "$UPDATES_AVAILABLE" -ne 0 ]; then
         fi
     fi
 
-    # RESTART SCRIPT ONLY IF AT LEAST ONE UPDATE SUCCEEDED
+    # RESTART SCRIPT ONLY IF SUCCESSFUL AND RUNNING FROM DISK
     if [ "$DID_UPDATE" -eq 1 ]; then
         echo "✅ Updates applied successfully."
-        echo "🔄 Restarting Basecamp to apply changes..."
-        echo ""
-        sleep 1
-        hash -r
-        exec "$0" "$@"
+        # We only restart if $0 is a regular file. 
+        # If it's bash or a pipe descriptor, we just continue.
+        if [ -f "$0" ]; then
+            echo "🔄 Restarting Basecamp to apply changes..."
+            echo ""
+            sleep 1
+            hash -r
+            exec "$0" "$@"
+        else
+            echo "💡 Changes applied to your environment."
+            hash -r
+        fi
     fi
-    
-    # If we are here, either updates were skipped or all failed.
-    # We continue without restarting to avoid infinite loops.
 fi
 
 echo "✅ System ready. Launching installer..."
@@ -206,19 +216,12 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# We use a HEREDOC to extract the payload. This is compatible with 
-# piped execution (like 'curl | bash') and string execution (bash -c).
+# We use a HEREDOC to extract the payload.
 base64 --decode << 'BASECAMP_PAYLOAD' > "$TMP_DIR/installer.mjs"
 {{PAYLOAD}}
 BASECAMP_PAYLOAD
 
 # --- EXECUTION ---
-# Re-attach stdin to the terminal if we are running from a pipe but have a terminal.
-# This fixes interactivity issues when users run: curl ... | bash
-if [ ! -t 0 ] && [ -t 1 ]; then
-    exec < /dev/tty
-fi
-
 node "$TMP_DIR/installer.mjs" "$@"
 
 exit $?
