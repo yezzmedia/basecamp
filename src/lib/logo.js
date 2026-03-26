@@ -10,7 +10,7 @@ export const printLogo = () => {
    ${pc.blue('  /  \\')}
    ${pc.blue(' /    \\')}      ${pc.white(pc.bold('BASECAMP'))}
    ${pc.blue('/______\\')}     ${pc.dim('Modern Laravel Installer')}
-  ${pc.blue('/ /    \\ \\')}    ${pc.dim('v1.0.0')}
+  ${pc.blue('/ /    \\ \\')}    ${pc.dim('v0.1.6')}
  ${pc.blue('/_/______\\_\\')}
     `;
 
@@ -19,7 +19,7 @@ ${pc.blue('      _BASE_')}
 ${pc.blue('     /      \\')}
 ${pc.blue('    /        \\')}      ${pc.white(pc.bold('BASECAMP'))}
 ${pc.blue('   /    /\\    \\')}     ${pc.dim('The Modern Laravel Installer')}
-${pc.blue('  /    /  \\    \\')}    ${pc.dim('v0.1.0')}
+${pc.blue('  /    /  \\    \\')}    ${pc.dim('v0.1.6')}
 ${pc.blue(' /____/____\\____\\')}
 ${pc.blue(' \\____\\____/____/')}
     `;

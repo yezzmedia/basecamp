@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6] - 2026-03-26
+
+### Added
+- Added `--guidelines` argument to specify a GitHub URL for AI guidelines, which are automatically downloaded and stored in `resources/boost/guidelines/core.blade.php`.
+
+### Fixed
+- Improved terminal re-attachment and piped execution robustness.
+- Fixed `y: command not found` error during piped installation by correctly handling interactive prompts and TTY detection.
+- Prevented script body consumption from pipe during interactive checks.
+
 ## [0.1.5] - 2026-03-23
 
 ### Fixed
