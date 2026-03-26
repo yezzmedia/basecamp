@@ -25,7 +25,8 @@ async function main() {
         argDb: getArgValue('--db'),
         argMode: getArgValue('--mode'),
         argTemplate: getArgValue('--template'),
-        argPackages: getArgValue('--packages')
+        argPackages: getArgValue('--packages'),
+        argGuidelines: getArgValue('--guidelines')
     };
 
     /**

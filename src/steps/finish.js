@@ -5,13 +5,13 @@
  */
 
 import pc from 'picocolors';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { intro, outro } from '@clack/prompts';
 import { run } from '../lib/utils.js';
 
 export async function performFinish(args, setupData, configData, s) {
-    const { isVerbose, isNonInteractive } = args;
+    const { isVerbose, isNonInteractive, argGuidelines } = args;
     const { project, mode, selectedTemplate } = setupData;
     const { db, extraFlags, packagesToInstall, adminEmail, adminPassword } = configData;
 
@@ -50,6 +50,38 @@ export async function performFinish(args, setupData, configData, s) {
         await run(`npm install`, project, isVerbose);
         await run(`npm run build`, project, isVerbose);
     } catch (e) {}
+
+    /**
+     * AI GUIDELINES INTEGRATION
+     */
+    if (argGuidelines) {
+        if (!isVerbose) s.message = 'Downloading AI guidelines...';
+        else console.log(pc.blue(`\n[Basecamp] STEP 7.5: Downloading AI guidelines...`));
+
+        try {
+            let url = argGuidelines;
+            // Convert GitHub blob URL to raw URL if needed
+            if (url.includes('github.com') && url.includes('/blob/')) {
+                url = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+            }
+
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Failed to fetch guidelines: ${response.statusText}`);
+            
+            const content = await response.text();
+            const boostDir = `${project}/resources/boost/guidelines`;
+            if (!existsSync(boostDir)) {
+                mkdirSync(boostDir, { recursive: true });
+            }
+            // We save it as .blade.php as per Boost convention
+            writeFileSync(`${boostDir}/core.blade.php`, content);
+            
+            if (!isVerbose) s.message = 'AI Guidelines integrated!';
+        } catch (e) {
+            if (!isVerbose) s.message = pc.yellow('Failed to download guidelines (skipping).');
+            else if (isVerbose) console.error(pc.red(`[Basecamp] Error downloading guidelines: ${e.message}`));
+        }
+    }
 
     /**
      * HEALTH CHECKS
