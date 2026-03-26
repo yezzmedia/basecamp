@@ -5,13 +5,13 @@
  */
 
 import pc from 'picocolors';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { intro, outro } from '@clack/prompts';
 import { run } from '../lib/utils.js';
 
 export async function performFinish(args, setupData, configData, s) {
-    const { isVerbose, isNonInteractive } = args;
+    const { isVerbose, isNonInteractive, argGuidelines } = args;
     const { project, mode, selectedTemplate } = setupData;
     const { db, extraFlags, packagesToInstall, adminEmail, adminPassword } = configData;
 
@@ -50,6 +50,51 @@ export async function performFinish(args, setupData, configData, s) {
         await run(`npm install`, project, isVerbose);
         await run(`npm run build`, project, isVerbose);
     } catch (e) {}
+
+    /**
+     * AI GUIDELINES INTEGRATION
+     */
+    if (argGuidelines) {
+        if (!isVerbose) s.message = 'Integrating AI guidelines...';
+        else console.log(pc.blue(`\n[Basecamp] STEP 7.5: Integrating AI guidelines...`));
+
+        try {
+            let url = argGuidelines;
+            // Convert GitHub repo or blob URL to raw URL if needed
+            if (url.includes('github.com')) {
+                if (url.includes('/blob/')) {
+                    url = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+                } else if (!url.includes('raw.githubusercontent.com') && !url.endsWith('.md')) {
+                    // Assume it's a repo URL, try to fetch GUIDELINES.md from main branch
+                    url = url.replace('github.com', 'raw.githubusercontent.com') + '/main/GUIDELINES.md';
+                }
+            }
+
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Failed to fetch guidelines: ${response.statusText}`);
+            
+            const content = await response.text();
+            const aiDir = `${project}/.ai/guidelines`;
+            if (!existsSync(aiDir)) {
+                mkdirSync(aiDir, { recursive: true });
+            }
+            
+            // Save as GUIDELINES.md
+            writeFileSync(`${aiDir}/GUIDELINES.md`, content);
+            
+            // Regenerate Boost files
+            try {
+                await run(`php artisan boost:update`, project, isVerbose);
+            } catch (boostError) {
+                // Ignore if boost is not installed or command fails
+            }
+            
+            if (!isVerbose) s.message = 'AI Guidelines integrated!';
+        } catch (e) {
+            if (!isVerbose) s.message = pc.yellow('Failed to integrate guidelines (skipping).');
+            else if (isVerbose) console.error(pc.red(`[Basecamp] Error integrating guidelines: ${e.message}`));
+        }
+    }
 
     /**
      * HEALTH CHECKS
