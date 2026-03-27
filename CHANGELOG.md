@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.7] - 2026-03-27
+
+### Added
+- **Modern Redesign:** Completely redesigned landing page and documentation with yezzmedia branding, glassmorphism, and improved aesthetics.
+- **Vendor Integration:** Added "by yezzmedia" branding to CLI and Website.
+
+### Fixed
+- **CI Stability:** Fixed `/dev/tty` error in GitHub Actions environments by implementing robust TTY detection that respects the `CI` environment variable.
+- **Placeholders:** Removed hardcoded `your-username` placeholders from documentation.
+
 ## [0.1.6] - 2026-03-26
 
 ### Added
