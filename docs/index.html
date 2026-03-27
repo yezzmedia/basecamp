@@ -3,66 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basecamp - The Modern Laravel Installer</title>
+    <title>Basecamp by yezzmedia - The Modern Laravel Installer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         body { font-family: 'Inter', sans-serif; }
         .gradient-bg {
-            background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%);
+            background: radial-gradient(circle at 50% -20%, #1e293b 0%, #020617 100%);
         }
         .glass {
-            background: rgba(30, 41, 59, 0.5);
-            backdrop-filter: blur(10px);
-            border: 1px border rgba(255, 255, 255, 0.05);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-glow {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+            z-index: -1;
+            filter: blur(60px);
         }
     </style>
 </head>
-<body class="gradient-bg text-slate-200 min-h-screen">
+<body class="gradient-bg text-slate-300 min-h-screen selection:bg-blue-500/30">
+
+    <div class="hero-glow"></div>
 
     <!-- Header / Navigation -->
-    <nav class="max-w-6xl mx-auto px-6 py-8 flex justify-between items-center">
-        <div class="flex items-center space-x-3">
-            <span class="text-3xl">⛺</span>
-            <span class="text-2xl font-extrabold tracking-tight text-white italic">BASECAMP</span>
+    <nav class="max-w-6xl mx-auto px-6 py-8 flex justify-between items-center relative z-10">
+        <div class="flex items-center space-x-3 group">
+            <span class="text-3xl transition-transform group-hover:scale-110 duration-300">⛺</span>
+            <div class="flex flex-col">
+                <span class="text-2xl font-black tracking-tighter text-white italic leading-none">BASECAMP</span>
+                <span class="text-[10px] font-bold tracking-[0.2em] text-blue-400 uppercase">by yezzmedia</span>
+            </div>
         </div>
-        <div class="hidden md:flex space-x-8 text-sm font-medium">
-            <a href="#features" class="hover:text-blue-400 transition">Features</a>
-            <a href="#templates" class="hover:text-blue-400 transition">Templates</a>
-            <a href="documentation.html" class="hover:text-emerald-400 transition">Documentation</a>
-            <a href="#requirements" class="hover:text-blue-400 transition">Requirements</a>
-            <a href="#cli" class="hover:text-blue-400 transition">CLI Reference</a>
-            <a href="https://github.com/yezzmedia/basecamp" target="_blank" class="hover:text-blue-400 transition">GitHub</a>
+        <div class="hidden md:flex items-center space-x-8 text-sm font-semibold">
+            <a href="#features" class="text-slate-400 hover:text-white transition">Features</a>
+            <a href="#templates" class="text-slate-400 hover:text-white transition">Templates</a>
+            <a href="documentation.html" class="text-slate-400 hover:text-emerald-400 transition">Docs</a>
+            <a href="https://github.com/yezzmedia/basecamp" target="_blank" class="px-5 py-2.5 bg-slate-800/50 hover:bg-slate-800 text-white rounded-full border border-slate-700 transition flex items-center space-x-2">
+                <span>GitHub</span>
+            </a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="max-w-6xl mx-auto px-6 pt-20 pb-32 text-center">
-        <h1 class="text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter leading-tight">
-            Bootstrap Laravel <br>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">in Seconds.</span>
+    <header class="max-w-6xl mx-auto px-6 pt-24 pb-32 text-center relative">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold mb-8 animate-pulse">
+            <span>✨ v0.1.6 Now Available</span>
+        </div>
+        <h1 class="text-6xl md:text-8xl font-black text-white mb-8 tracking-tighter leading-[1.1]">
+            Laravel setup <br>
+            <span class="text-gradient">redefined.</span>
         </h1>
-        <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-12">
-            The modern, modular, single-file cross-platform installer for Laravel 11+. 
-            Beautiful CLI, powerful templates, and everything you need to start building immediately.
+        <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-14 leading-relaxed font-medium">
+            The professional, modular installer for modern Laravel 11+ stacks. 
+            Beautiful CLI, curated templates, and yezzmedia quality.
         </p>
 
         <!-- Command Prompt Box -->
-        <div id="quickstart" class="max-w-3xl mx-auto bg-slate-900 rounded-xl border border-slate-800 p-2 shadow-2xl mb-12 relative group">
-            <div class="flex items-center justify-between px-4 py-3 bg-slate-800/50 rounded-t-lg border-b border-slate-800">
+        <div id="quickstart" class="max-w-3xl mx-auto bg-slate-950 rounded-2xl border border-slate-800/50 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] mb-14 relative group">
+            <div class="flex items-center justify-between px-5 py-3 bg-slate-900/40 rounded-t-xl border-b border-slate-800/50">
                 <div class="flex space-x-2">
-                    <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
-                    <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-                    <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                    <div class="w-3 h-3 rounded-full bg-slate-700"></div>
+                    <div class="w-3 h-3 rounded-full bg-slate-700"></div>
+                    <div class="w-3 h-3 rounded-full bg-slate-700"></div>
                 </div>
-                <span class="text-xs font-mono text-slate-500">terminal — bash</span>
+                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Terminal — yezzmedia Shell</span>
             </div>
-            <div class="p-6 text-left font-mono text-sm md:text-base leading-relaxed overflow-x-auto whitespace-nowrap pr-24">
-                <span class="text-emerald-400">$</span> <span id="install-command" class="text-slate-100">curl -fsSL https://yezzmedia.github.io/basecamp/install | bash</span>
+            <div class="p-8 text-left font-mono text-base md:text-lg leading-relaxed overflow-x-auto whitespace-nowrap pr-24">
+                <span class="text-blue-500">yezz@basecamp</span>:<span class="text-emerald-400">~</span>$ <span id="install-command" class="text-slate-200">curl -fsSL https://yezzmedia.github.io/basecamp/install | bash</span>
             </div>
             <!-- Copy Button -->
-            <button onclick="copyToClipboard()" class="absolute top-14 right-6 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-lg border border-slate-700 transition flex items-center space-x-2">
-                <span id="copy-text">Copy</span>
+            <button onclick="copyToClipboard()" class="absolute top-[68px] right-6 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg transition-all shadow-lg shadow-blue-600/20 active:scale-95 flex items-center space-x-2">
+                <span id="copy-text">Copy Command</span>
             </button>
         </div>
 
@@ -71,193 +96,203 @@
                 const text = document.getElementById('install-command').innerText;
                 navigator.clipboard.writeText(text).then(() => {
                     const btnText = document.getElementById('copy-text');
+                    const btn = btnText.parentElement;
                     btnText.innerText = 'Copied!';
-                    setTimeout(() => { btnText.innerText = 'Copy'; }, 2000);
+                    btn.classList.replace('bg-blue-600', 'bg-emerald-600');
+                    setTimeout(() => { 
+                        btnText.innerText = 'Copy Command'; 
+                        btn.classList.replace('bg-emerald-600', 'bg-blue-600');
+                    }, 2000);
                 });
             }
         </script>
 
-
         <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <a href="documentation.html" class="px-8 py-4 bg-white text-slate-900 font-bold rounded-full hover:bg-slate-200 transition shadow-lg shadow-white/10 w-full sm:w-auto text-center">
-                Get Started
+            <a href="documentation.html" class="px-10 py-4 bg-white text-slate-950 font-extrabold rounded-full hover:bg-slate-200 transition-all shadow-xl shadow-white/5 hover:scale-105">
+                Read Documentation
             </a>
-            <a href="https://github.com/yezzmedia/basecamp" target="_blank" class="px-8 py-4 bg-slate-800 text-white font-bold rounded-full hover:bg-slate-700 transition w-full sm:w-auto border border-slate-700 text-center">
-                GitHub
+            <a href="https://github.com/yezzmedia/basecamp" target="_blank" class="px-10 py-4 bg-slate-900/50 text-white font-extrabold rounded-full hover:bg-slate-800 transition-all border border-slate-700 hover:scale-105">
+                Star on GitHub
             </a>
         </div>
     </header>
 
+    <!-- Vendor Section -->
+    <section class="max-w-6xl mx-auto px-6 py-12 mb-20">
+        <div class="glass rounded-3xl p-1 px-1 flex flex-col md:flex-row items-center justify-between">
+            <div class="px-10 py-8 flex-1">
+                <h3 class="text-white font-bold text-lg mb-2">Designed by yezzmedia</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">
+                    Basecamp is part of the yezzmedia ecosystem — focusing on developer experience and high-quality Laravel tooling.
+                </p>
+            </div>
+            <div class="bg-slate-800/50 h-px w-full md:h-20 md:w-px"></div>
+            <div class="px-10 py-8 flex items-center space-x-8">
+                <a href="https://yezzmedia.com" target="_blank" class="text-slate-500 hover:text-white transition font-bold text-xs uppercase tracking-widest">yezzmedia.com</a>
+                <a href="mailto:info@yezzmedia.com" class="text-slate-500 hover:text-white transition font-bold text-xs uppercase tracking-widest">Contact Support</a>
+            </div>
+        </div>
+    </section>
+
     <!-- Features Grid -->
-    <section id="features" class="max-w-6xl mx-auto px-6 py-24 border-t border-slate-800/50">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-left">
+    <section id="features" class="max-w-6xl mx-auto px-6 py-32 border-t border-slate-900">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
             <!-- Feature 1 -->
-            <div class="group">
-                <div class="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition duration-300">⚡</div>
-                <h3 class="text-xl font-bold text-white mb-3">Lightning Fast</h3>
-                <p class="text-slate-400 leading-relaxed">
-                    Zero manual configuration. Choose your template, and Basecamp handles everything from project creation to frontend builds and Git initialization.
+            <div class="relative group">
+                <div class="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition-all group-hover:bg-blue-500/20 group-hover:shadow-[0_0_30px_rgba(59,130,246,0.2)]">⚡</div>
+                <h3 class="text-2xl font-bold text-white mb-4">Zero Fatigue</h3>
+                <p class="text-slate-400 leading-relaxed font-medium">
+                    Skip the boilerplate. Basecamp automates migrations, Git init, and frontend builds so you can start coding your business logic immediately.
                 </p>
             </div>
             <!-- Feature 2 -->
-            <div class="group">
-                <div class="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition duration-300">📦</div>
-                <h3 class="text-xl font-bold text-white mb-3">Filament v5 Ready</h3>
-                <p class="text-slate-400 leading-relaxed">
-                    Automatically installs and configures Filament v5, creates your admin user, and sets up all necessary providers and assets.
+            <div class="relative group">
+                <div class="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition-all group-hover:bg-emerald-500/20 group-hover:shadow-[0_0_30px_rgba(52,211,153,0.2)]">📦</div>
+                <h3 class="text-2xl font-bold text-white mb-4">Filament Mastery</h3>
+                <p class="text-slate-400 leading-relaxed font-medium">
+                    Native support for Filament v5. We handle the panel installation, user creation, and provider registration out of the box.
                 </p>
             </div>
             <!-- Feature 3 -->
-            <div class="group">
-                <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition duration-300">🛡️</div>
-                <h3 class="text-xl font-bold text-white mb-3">Fully Automated</h3>
-                <p class="text-slate-400 leading-relaxed">
-                    Use CLI flags for CI/CD or scripts. Support for non-interactive runs, project naming, database selection, and custom package lists.
+            <div class="relative group">
+                <div class="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition-all group-hover:bg-purple-500/20 group-hover:shadow-[0_0_30px_rgba(168,85,247,0.2)]">🛡️</div>
+                <h3 class="text-2xl font-bold text-white mb-4">CI/CD Ready</h3>
+                <p class="text-slate-400 leading-relaxed font-medium">
+                    Built for automation. Use powerful CLI flags to integrate Basecamp into your team's workflow or CI pipelines.
                 </p>
             </div>
         </div>
     </section>
 
     <!-- Templates Section -->
-    <section id="templates" class="max-w-6xl mx-auto px-6 py-24 border-t border-slate-800/50">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-white mb-4">Project Templates</h2>
-            <p class="text-slate-400">Choose the perfect starting point for your next big idea.</p>
+    <section id="templates" class="max-w-6xl mx-auto px-6 py-32 border-t border-slate-900">
+        <div class="text-center mb-24">
+            <h2 class="text-5xl font-black text-white mb-6 tracking-tighter">Premium Stacks.</h2>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto font-medium">Carefully curated configurations for any type of Laravel project.</p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Template 1 -->
-            <div class="glass p-8 rounded-2xl border border-slate-800 hover:border-blue-500/50 transition">
-                <h3 class="text-xl font-bold text-white mb-2">Basecamp</h3>
-                <p class="text-sm text-slate-500 mb-6">The Balanced Default</p>
-                <ul class="text-sm space-y-3 mb-8">
-                    <li class="flex items-center text-slate-400">✅ Filament v5</li>
-                    <li class="flex items-center text-slate-400">✅ Pest & Boost</li>
-                    <li class="flex items-center text-slate-400">✅ Livewire & NPM</li>
+            <div class="glass p-10 rounded-[32px] hover:border-blue-500/50 transition-all hover:translate-y-[-8px]">
+                <h3 class="text-2xl font-extrabold text-white mb-2">Basecamp</h3>
+                <p class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-8 italic">The Gold Standard</p>
+                <ul class="space-y-4 mb-10 text-sm font-semibold">
+                    <li class="flex items-center text-slate-300">
+                        <span class="w-5 h-5 bg-blue-500/20 rounded-full flex items-center justify-center mr-3 text-[10px]">✓</span>
+                        Filament v5
+                    </li>
+                    <li class="flex items-center text-slate-300">
+                        <span class="w-5 h-5 bg-blue-500/20 rounded-full flex items-center justify-center mr-3 text-[10px]">✓</span>
+                        Pest & Boost
+                    </li>
+                    <li class="flex items-center text-slate-300">
+                        <span class="w-5 h-5 bg-blue-500/20 rounded-full flex items-center justify-center mr-3 text-[10px]">✓</span>
+                        Livewire Core
+                    </li>
                 </ul>
+                <div class="h-px bg-slate-800 w-full mb-6"></div>
+                <span class="text-[10px] text-slate-500 font-bold uppercase">yezzmedia Recommended</span>
             </div>
             <!-- Template 2 -->
-            <div class="glass p-8 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition">
-                <h3 class="text-xl font-bold text-white mb-2">Minimal</h3>
-                <p class="text-sm text-slate-500 mb-6">Barebones Laravel</p>
-                <ul class="text-sm space-y-3 mb-8">
-                    <li class="flex items-center text-slate-400">✅ Essential Only</li>
-                    <li class="flex items-center text-slate-400">✅ Pest & Git</li>
-                    <li class="flex items-center text-slate-400">✅ Clean Slate</li>
+            <div class="glass p-10 rounded-[32px] hover:border-emerald-500/50 transition-all hover:translate-y-[-8px]">
+                <h3 class="text-2xl font-extrabold text-white mb-2">Minimal</h3>
+                <p class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-8 italic">Clean Slate</p>
+                <ul class="space-y-4 mb-10 text-sm font-semibold">
+                    <li class="flex items-center text-slate-300">
+                        <span class="w-5 h-5 bg-emerald-500/20 rounded-full flex items-center justify-center mr-3 text-[10px]">✓</span>
+                        Barebones Laravel
+                    </li>
+                    <li class="flex items-center text-slate-300">
+                        <span class="w-5 h-5 bg-emerald-500/20 rounded-full flex items-center justify-center mr-3 text-[10px]">✓</span>
+                        Pest Testing
+                    </li>
+                    <li class="flex items-center text-slate-300">
+                        <span class="w-5 h-5 bg-emerald-500/20 rounded-full flex items-center justify-center mr-3 text-[10px]">✓</span>
+                        Git Initialization
+                    </li>
                 </ul>
+                <div class="h-px bg-slate-800 w-full mb-6"></div>
+                <span class="text-[10px] text-slate-500 font-bold uppercase">Standard Stack</span>
             </div>
             <!-- Template 3 -->
-            <div class="glass p-8 rounded-2xl border border-slate-800 hover:border-purple-500/50 transition">
-                <h3 class="text-xl font-bold text-white mb-2">AI Expert</h3>
-                <p class="text-sm text-slate-500 mb-6">For AI Builders</p>
-                <ul class="text-sm space-y-3 mb-8">
-                    <li class="flex items-center text-slate-400">✅ Official AI SDK</li>
-                    <li class="flex items-center text-slate-400">✅ OpenAI Client</li>
-                    <li class="flex items-center text-slate-400">✅ Feature Flags</li>
+            <div class="glass p-10 rounded-[32px] hover:border-purple-500/50 transition-all hover:translate-y-[-8px]">
+                <h3 class="text-2xl font-extrabold text-white mb-2">AI Expert</h3>
+                <p class="text-xs font-bold text-purple-400 uppercase tracking-widest mb-8 italic">Future Proof</p>
+                <ul class="space-y-4 mb-10 text-sm font-semibold">
+                    <li class="flex items-center text-slate-300">
+                        <span class="w-5 h-5 bg-purple-500/20 rounded-full flex items-center justify-center mr-3 text-[10px]">✓</span>
+                        Official AI SDK
+                    </li>
+                    <li class="flex items-center text-slate-300">
+                        <span class="w-5 h-5 bg-purple-500/20 rounded-full flex items-center justify-center mr-3 text-[10px]">✓</span>
+                        OpenAI Client
+                    </li>
+                    <li class="flex items-center text-slate-300">
+                        <span class="w-5 h-5 bg-purple-500/20 rounded-full flex items-center justify-center mr-3 text-[10px]">✓</span>
+                        Feature Flags
+                    </li>
                 </ul>
+                <div class="h-px bg-slate-800 w-full mb-6"></div>
+                <span class="text-[10px] text-slate-500 font-bold uppercase">Modern Tech</span>
             </div>
             <!-- Template 4 -->
-            <div class="glass p-8 rounded-2xl border border-slate-800 hover:border-red-500/50 transition">
-                <h3 class="text-xl font-bold text-white mb-2">Full Stack Ops</h3>
-                <p class="text-sm text-slate-500 mb-6">Production Ready</p>
-                <ul class="text-sm space-y-3 mb-8">
-                    <li class="flex items-center text-slate-400">✅ Pulse & Horizon</li>
-                    <li class="flex items-center text-slate-400">✅ Satie Backups</li>
-                    <li class="flex items-center text-slate-400">✅ Media & Activity</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- Requirements Section -->
-    <section id="requirements" class="max-w-6xl mx-auto px-6 py-24 border-t border-slate-800/50">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-                <h2 class="text-4xl font-bold text-white mb-6">Compatibility & Requirements</h2>
-                <p class="text-slate-400 mb-8 leading-relaxed">
-                    Basecamp is designed to run anywhere modern Laravel development happens. 
-                    The script automatically verifies your environment before starting.
-                </p>
-                <div class="space-y-4">
-                    <div class="flex items-start space-x-4">
-                        <div class="text-blue-400 mt-1">🐧</div>
-                        <div>
-                            <h4 class="text-white font-semibold">Linux & macOS</h4>
-                            <p class="text-sm text-slate-500">Native support for all major distributions and Apple Silicon.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start space-x-4">
-                        <div class="text-blue-400 mt-1">🪟</div>
-                        <div>
-                            <h4 class="text-white font-semibold">Windows</h4>
-                            <p class="text-sm text-slate-500">Supported via <span class="text-slate-300">WSL2 (Recommended)</span> or <span class="text-slate-300">Git Bash</span>.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-8 glass">
-                <h3 class="text-xl font-bold text-white mb-6">Technical Prerequisites</h3>
-                <ul class="space-y-4">
-                    <li class="flex justify-between items-center border-b border-slate-800 pb-3">
-                        <span class="text-slate-400">PHP Runtime</span>
-                        <span class="text-blue-400 font-mono">8.2+</span>
+            <div class="glass p-10 rounded-[32px] hover:border-red-500/50 transition-all hover:translate-y-[-8px]">
+                <h3 class="text-2xl font-extrabold text-white mb-2">Full Ops</h3>
+                <p class="text-xs font-bold text-red-400 uppercase tracking-widest mb-8 italic">Production Ready</p>
+                <ul class="space-y-4 mb-10 text-sm font-semibold">
+                    <li class="flex items-center text-slate-300">
+                        <span class="w-5 h-5 bg-red-500/20 rounded-full flex items-center justify-center mr-3 text-[10px]">✓</span>
+                        Pulse & Horizon
                     </li>
-                    <li class="flex justify-between items-center border-b border-slate-800 pb-3">
-                        <span class="text-slate-400">Composer</span>
-                        <span class="text-blue-400 font-mono">2.x</span>
+                    <li class="flex items-center text-slate-300">
+                        <span class="w-5 h-5 bg-red-500/20 rounded-full flex items-center justify-center mr-3 text-[10px]">✓</span>
+                        Backup Suite
                     </li>
-                    <li class="flex justify-between items-center border-b border-slate-800 pb-3">
-                        <span class="text-slate-400">Node.js / NPM</span>
-                        <span class="text-blue-400 font-mono">18+</span>
-                    </li>
-                    <li class="flex justify-between items-center">
-                        <span class="text-slate-400">Git</span>
-                        <span class="text-blue-400 font-mono">Required</span>
+                    <li class="flex items-center text-slate-300">
+                        <span class="w-5 h-5 bg-red-500/20 rounded-full flex items-center justify-center mr-3 text-[10px]">✓</span>
+                        Media Library
                     </li>
                 </ul>
+                <div class="h-px bg-slate-800 w-full mb-6"></div>
+                <span class="text-[10px] text-slate-500 font-bold uppercase">Scale Ready</span>
             </div>
         </div>
     </section>
 
     <!-- CLI Reference Section -->
-    <section id="cli" class="max-w-6xl mx-auto px-6 py-24 border-t border-slate-800/50">
+    <section id="cli" class="max-w-6xl mx-auto px-6 py-32 border-t border-slate-900">
         <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-white mb-4">CLI Reference</h2>
-            <p class="text-slate-400">Automate your workflow with powerful command-line arguments.</p>
+            <h2 class="text-4xl font-black text-white mb-4 tracking-tight">CLI Reference</h2>
+            <p class="text-slate-400 font-medium">Power users only. Control everything via arguments.</p>
         </div>
-        <div class="bg-slate-900/50 rounded-2xl border border-slate-800 overflow-hidden">
+        <div class="glass rounded-3xl overflow-hidden shadow-2xl">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-slate-800/50 text-slate-300 text-sm uppercase tracking-wider">
-                        <th class="px-6 py-4">Argument</th>
-                        <th class="px-6 py-4">Description</th>
-                        <th class="px-6 py-4">Example</th>
+                    <tr class="bg-slate-900/50 text-slate-400 text-[10px] uppercase tracking-[0.2em] font-black">
+                        <th class="px-8 py-6">Argument</th>
+                        <th class="px-8 py-6">Description</th>
+                        <th class="px-8 py-6">Example</th>
                     </tr>
                 </thead>
-                <tbody class="text-sm text-slate-400 divide-y divide-slate-800">
-                    <tr>
-                        <td class="px-6 py-4 font-mono text-emerald-400">-y, --yes</td>
-                        <td class="px-6 py-4">Enable non-interactive mode (skips all prompts)</td>
-                        <td class="px-6 py-4 font-mono text-slate-500">basecamp.sh --yes</td>
+                <tbody class="text-sm text-slate-300 divide-y divide-slate-800/50">
+                    <tr class="hover:bg-slate-800/20 transition">
+                        <td class="px-8 py-6 font-mono text-emerald-400 font-bold">-y, --yes</td>
+                        <td class="px-8 py-6">Enable non-interactive mode (skips all prompts)</td>
+                        <td class="px-8 py-6 font-mono text-slate-500">basecamp.sh --yes</td>
                     </tr>
-                    <tr>
-                        <td class="px-6 py-4 font-mono text-emerald-400">--name</td>
-                        <td class="px-6 py-4">Set the project name and directory</td>
-                        <td class="px-6 py-4 font-mono text-slate-500">--name=my-app</td>
+                    <tr class="hover:bg-slate-800/20 transition">
+                        <td class="px-8 py-6 font-mono text-emerald-400 font-bold">--name</td>
+                        <td class="px-8 py-6">Set the project name and directory</td>
+                        <td class="px-8 py-6 font-mono text-slate-500">--name=my-app</td>
                     </tr>
-                    <tr>
-                        <td class="px-6 py-4 font-mono text-emerald-400">--template</td>
-                        <td class="px-6 py-4">Choose a preset (basecamp, minimal, ai, full)</td>
-                        <td class="px-6 py-4 font-mono text-slate-500">--template=ai</td>
+                    <tr class="hover:bg-slate-800/20 transition">
+                        <td class="px-8 py-6 font-mono text-emerald-400 font-bold">--template</td>
+                        <td class="px-8 py-6">Choose a preset (basecamp, minimal, ai, full)</td>
+                        <td class="px-8 py-6 font-mono text-slate-500">--template=ai</td>
                     </tr>
-                    <tr>
-                        <td class="px-6 py-4 font-mono text-emerald-400">--packages</td>
-                        <td class="px-6 py-4">Comma-separated list of extra packages</td>
-                        <td class="px-6 py-4 font-mono text-slate-500">--packages=pulse,horizon</td>
-                    </tr>
-                    <tr>
-                        <td class="px-6 py-4 font-mono text-emerald-400">--force</td>
-                        <td class="px-6 py-4">Force overwrite existing project directory</td>
-                        <td class="px-6 py-4 font-mono text-slate-500">--force</td>
+                    <tr class="hover:bg-slate-800/20 transition">
+                        <td class="px-8 py-6 font-mono text-emerald-400 font-bold">--packages</td>
+                        <td class="px-8 py-6">Comma-separated list of extra packages</td>
+                        <td class="px-8 py-6 font-mono text-slate-500">--packages=pulse,horizon</td>
                     </tr>
                 </tbody>
             </table>
@@ -265,9 +300,19 @@
     </section>
 
     <!-- Footer -->
-    <footer class="max-w-6xl mx-auto px-6 py-12 border-t border-slate-800/50 text-center text-slate-500 text-sm">
-        <p>© 2026 Basecamp Installer. Open source under MIT License.</p>
-        <p class="mt-2">Built with <span class="text-red-500/50">❤️</span> for the Laravel Community.</p>
+    <footer class="max-w-6xl mx-auto px-6 py-24 border-t border-slate-900 text-center">
+        <div class="flex items-center justify-center space-x-3 mb-8">
+            <span class="text-2xl">⛺</span>
+            <span class="text-xl font-black tracking-tighter text-white italic">BASECAMP</span>
+        </div>
+        <p class="text-slate-500 text-sm font-medium mb-4">
+            © 2026 yezzmedia. Open source under MIT License.
+        </p>
+        <div class="flex justify-center space-x-6 text-slate-600 font-bold text-[10px] uppercase tracking-widest">
+            <a href="https://github.com/yezzmedia/basecamp" class="hover:text-white transition">GitHub</a>
+            <a href="https://yezzmedia.com" class="hover:text-white transition">Vendor</a>
+            <a href="mailto:info@yezzmedia.com" class="hover:text-white transition">Support</a>
+        </div>
     </footer>
 
 </body>
