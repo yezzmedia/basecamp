@@ -1,6 +1,7 @@
 node_modules/
 dist/installer.bundle.mjs
 basecamp-smoke-test-app/
+basecamp-app/
 .DS_Store
 .env
 .idea/
