@@ -171,8 +171,8 @@ main() {
             done
         else
             echo "💡 Some tools have updates available."
-            # Only prompt if we have a terminal
-            if [ -c /dev/tty ]; then
+            # Only prompt if we have a terminal and are not in CI
+            if [ -t 0 ] && [ -c /dev/tty ] && [ -z "${CI}" ]; then
                 printf "Do you want to update them now? (y/N): "
                 # Read specifically from terminal to avoid consuming the script body
                 read -r response < /dev/tty
@@ -221,8 +221,8 @@ main() {
 BASECAMP_PAYLOAD
 
     # --- EXECUTION ---
-    # If we have a terminal, attach node to it for interactive prompts
-    if [ -c /dev/tty ]; then
+    # If we have a terminal (and not in CI), attach node to it for interactive prompts
+    if [ -c /dev/tty ] && [ -z "${CI}" ]; then
         node "$TMP_DIR/installer.mjs" "$@" < /dev/tty
     else
         node "$TMP_DIR/installer.mjs" "$@"
