@@ -97,6 +97,36 @@ export async function performFinish(args, setupData, configData, s) {
     }
 
     /**
+     * YEZZMEDIA SUITE SETUP
+     */
+    const hasYezzmedia = packagesToInstall.some(p => p.startsWith('yezzmedia-'));
+    if (hasYezzmedia) {
+        if (!isVerbose) s.message = 'Configuring Yezzmedia Suite...';
+        else console.log(pc.blue(`\n[Basecamp] STEP 7.8: Configuring Yezzmedia Suite...`));
+
+        try {
+            // 1-4: Install, Migrate, Audit, Middleware Bridge
+            await run(`php artisan website:install --migrate --configure-audit --audit-package=all --configure-http-middleware-bridge --no-interaction`, project, isVerbose);
+            
+            // 5: Sync Permissions
+            await run(`php artisan website:sync-permissions --no-interaction`, project, isVerbose);
+            
+            // 6: Seed Roles
+            await run(`php artisan website:seed-roles --no-interaction`, project, isVerbose);
+            
+            // 7: Grant Ops Access
+            await run(`php artisan website:grant-ops-access "${adminEmail}" --no-interaction`, project, isVerbose);
+            
+            // 8: Doctor Check
+            await run(`php artisan website:doctor --no-interaction`, project, isVerbose);
+
+            if (!isVerbose) s.message = 'Yezzmedia Suite configured!';
+        } catch (e) {
+            if (isVerbose) console.warn(pc.yellow(`\nWarning: Yezzmedia Suite configuration encountered errors.`));
+        }
+    }
+
+    /**
      * HEALTH CHECKS
      */
     if (!isVerbose) s.message = 'Performing post-install health checks...';

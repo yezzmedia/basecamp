@@ -86,6 +86,33 @@ export async function performConfig(args, setupData) {
         packagesToInstall = selectedPackages || [];
 
         /**
+         * YEZZMEDIA SPECIFIC PACKAGES
+         */
+        if (selectedTemplate.label === 'Yezzmedia') {
+            const yezzmediaPackages = await multiselect({
+                message: 'Select Yezzmedia Suite packages:',
+                options: [
+                    { value: 'yezzmedia-foundation', label: 'Foundation', hint: 'yezzmedia/laravel-foundation', selected: packagesToInstall.includes('yezzmedia-foundation') },
+                    { value: 'yezzmedia-access', label: 'Access', hint: 'yezzmedia/laravel-access', selected: packagesToInstall.includes('yezzmedia-access') },
+                    { value: 'yezzmedia-ops', label: 'Ops Core', hint: 'yezzmedia/laravel-ops', selected: packagesToInstall.includes('yezzmedia-ops') },
+                    { value: 'yezzmedia-ops-infrastructure', label: 'Ops Infrastructure', hint: 'yezzmedia/laravel-ops-infrastructure', selected: packagesToInstall.includes('yezzmedia-ops-infrastructure') },
+                    { value: 'yezzmedia-ops-security', label: 'Ops Security', hint: 'yezzmedia/laravel-ops-security', selected: packagesToInstall.includes('yezzmedia-ops-security') },
+                    { value: 'yezzmedia-ops-sites', label: 'Ops Sites', hint: 'yezzmedia/laravel-ops-sites', selected: packagesToInstall.includes('yezzmedia-ops-sites') },
+                    { value: 'yezzmedia-ops-analytics', label: 'Ops Analytics', hint: 'yezzmedia/laravel-ops-analytics', selected: packagesToInstall.includes('yezzmedia-ops-analytics') },
+                    { value: 'yezzmedia-ops-backups', label: 'Ops Backups', hint: 'yezzmedia/laravel-ops-backups', selected: packagesToInstall.includes('yezzmedia-ops-backups') },
+                ],
+                required: false,
+            });
+            if (isCancel(yezzmediaPackages)) { outro('Setup cancelled.'); process.exit(0); }
+            
+            // Re-merge: remove all old yezzmedia packages and add new selection
+            packagesToInstall = [
+                ...packagesToInstall.filter(p => !p.startsWith('yezzmedia-')),
+                ...(yezzmediaPackages || [])
+            ];
+        }
+
+        /**
          * FILAMENT CREDENTIALS
          */
         if (packagesToInstall.includes('filament')) {

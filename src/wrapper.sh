@@ -38,8 +38,8 @@ main() {
                 fi
                 ;;
             laravel)
-                echo "🚀 Updating Laravel environment via php.new..."
-                if /bin/bash -c "$(curl -fsSL https://php.new/install/linux)"; then
+                echo "🚀 Updating Laravel installer..."
+                if composer global require laravel/installer; then
                     return 0
                 fi
                 ;;
@@ -70,8 +70,9 @@ main() {
             case $cmd in
                 composer)
                     local latest
+                    # Get latest stable tag, excluding RCs, betas, etc.
                     latest=$(curl -s https://api.github.com/repos/composer/composer/releases/latest | grep -oE '"tag_name": "[^"]+"' | cut -d'"' -f4 || echo "")
-                    if [ ! -z "$latest" ]; then
+                    if [ ! -z "$latest" ] && [[ ! "$latest" =~ -(RC|beta|alpha) ]]; then
                         local current
                         current=$("$cmd" "$version_flag" 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)
                         if [[ "$latest" != "$current" ]]; then
@@ -99,20 +100,24 @@ main() {
                     fi
                     ;;
                 laravel)
-                    local latest
-                    latest=$(composer global show laravel/installer --latest 2>/dev/null | grep 'latest' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1 || echo "")
-                    if [ ! -z "$latest" ]; then
-                        local current
-                        current=$("$cmd" "$version_flag" 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)
-                        if [[ "$latest" != "$current" ]]; then
-                            echo "     💡 Update available: $current -> $latest"
-                            UPDATES_AVAILABLE=1
-                            CAN_AUTO_UPDATE_LIST="$CAN_AUTO_UPDATE_LIST laravel"
-                        elif [[ "$VERBOSE" -eq 1 ]]; then
-                            echo "     ✨ Laravel installer is up to date."
+                    # Check if it's actually managed by composer global
+                    if composer global show laravel/installer &>/dev/null; then
+                        local latest
+                        latest=$(composer global show laravel/installer --latest 2>/dev/null | grep 'latest' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1 || echo "")
+                        if [ ! -z "$latest" ]; then
+                            local current
+                            # Use composer's knowledge of the version instead of the binary in PATH
+                            current=$(composer global show laravel/installer 2>/dev/null | grep 'versions' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)
+                            if [[ "$latest" != "$current" ]]; then
+                                echo "     💡 Update available: $current -> $latest"
+                                UPDATES_AVAILABLE=1
+                                CAN_AUTO_UPDATE_LIST="$CAN_AUTO_UPDATE_LIST laravel"
+                            elif [[ "$VERBOSE" -eq 1 ]]; then
+                                echo "     ✨ Laravel installer is up to date."
+                            fi
                         fi
                     elif [[ "$VERBOSE" -eq 1 ]]; then
-                        echo "     ✨ Laravel installer is up to date."
+                        echo "     ✨ Laravel installer found in PATH but not managed by composer global."
                     fi
                     ;;
             esac
@@ -188,21 +193,25 @@ main() {
             fi
         fi
 
-        # RESTART SCRIPT ONLY IF SUCCESSFUL AND RUNNING FROM DISK
-        if [ "$DID_UPDATE" -eq 1 ]; then
-            echo "✅ Updates applied successfully."
-            # We only restart if $0 is a regular file. 
-            if [ -f "$0" ]; then
-                echo "🔄 Restarting Basecamp to apply changes..."
-                echo ""
-                sleep 1
-                hash -r
-                exec "$0" "$@"
-            else
-                echo "💡 Changes applied to your environment."
-                hash -r
-            fi
+    # RESTART SCRIPT ONLY IF SUCCESSFUL AND RUNNING FROM DISK
+    if [ "$DID_UPDATE" -eq 1 ]; then
+        echo "✅ Updates applied successfully."
+        # Prevent infinite loops if the version check still fails after update
+        if [ "$BASECAMP_RESTARTED" = "1" ]; then
+            echo "⚠️  Update applied but version mismatch detected. Skipping further updates."
+            hash -r
+        elif [ -f "$0" ]; then
+            echo "🔄 Restarting Basecamp to apply changes..."
+            echo ""
+            sleep 1
+            hash -r
+            export BASECAMP_RESTARTED=1
+            exec "$0" "$@"
+        else
+            echo "💡 Changes applied to your environment."
+            hash -r
         fi
+    fi
     fi
 
     echo "✅ System ready. Launching installer..."

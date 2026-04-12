@@ -67,6 +67,16 @@ export async function performInstallation(args, setupData, configData, s) {
         if (packagesToInstall.includes('medialibrary')) reqs.push('spatie/laravel-medialibrary');
         if (packagesToInstall.includes('activitylog')) reqs.push('spatie/laravel-activitylog');
 
+        // Yezzmedia Suite Mapping
+        if (packagesToInstall.includes('yezzmedia-foundation')) reqs.push('yezzmedia/laravel-foundation:"^0.1"');
+        if (packagesToInstall.includes('yezzmedia-access')) reqs.push('yezzmedia/laravel-access:"^0.1"');
+        if (packagesToInstall.includes('yezzmedia-ops')) reqs.push('yezzmedia/laravel-ops:"^0.1"');
+        if (packagesToInstall.includes('yezzmedia-ops-infrastructure')) reqs.push('yezzmedia/laravel-ops-infrastructure:"^0.1"');
+        if (packagesToInstall.includes('yezzmedia-ops-security')) reqs.push('yezzmedia/laravel-ops-security:"^0.1"');
+        if (packagesToInstall.includes('yezzmedia-ops-sites')) reqs.push('yezzmedia/laravel-ops-sites:"^0.1"');
+        if (packagesToInstall.includes('yezzmedia-ops-analytics')) reqs.push('yezzmedia/laravel-ops-analytics:"^0.1"');
+        if (packagesToInstall.includes('yezzmedia-ops-backups')) reqs.push('yezzmedia/laravel-ops-backups:"^0.1"');
+
         if (packagesToInstall.includes('telescope')) devReqs.push('laravel/telescope');
         if (packagesToInstall.includes('debugbar')) devReqs.push('barryvdh/laravel-debugbar');
         if (packagesToInstall.includes('ide-helper')) devReqs.push('barryvdh/laravel-ide-helper');

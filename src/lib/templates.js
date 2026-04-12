@@ -17,6 +17,23 @@ export const templates = {
         flags: ['--pest', '--git', '--npm'],
         packages: []
     },
+    yezzmedia: {
+        label: 'Yezzmedia',
+        hint: 'Basecamp Standard + Yezzmedia Suite',
+        flags: ['--pest', '--git', '--boost', '--livewire', '--npm'],
+        packages: [
+            'filament',
+            'debugbar',
+            'yezzmedia-foundation',
+            'yezzmedia-access',
+            'yezzmedia-ops',
+            'yezzmedia-ops-infrastructure',
+            'yezzmedia-ops-security',
+            'yezzmedia-ops-sites',
+            'yezzmedia-ops-analytics',
+            'yezzmedia-ops-backups'
+        ]
+    },
     ai: {
         label: 'AI Expert',
         hint: 'Basecamp + Official Laravel AI SDK and Feature Flags',

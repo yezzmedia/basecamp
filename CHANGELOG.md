@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.8] - 2026-03-27
+
+### Added
+- **Yezzmedia Template:** Added a new specialized template based on Basecamp (Standard) with integrated Yezzmedia Suite (Foundation, Access, Ops).
+- **Yezzmedia Configuration:** Interactive multiselect for Yezzmedia packages and automated post-installation setup (website:install, grant-ops-access, doctor check).
+
+### Fixed
+- **Infinite Update Loop:** Fixed a critical bug where the installer would enter an infinite restart loop if the Laravel version in PATH differed from the one managed by Composer.
+- **Update Logic Robustness:** Improved version detection by querying `composer global` directly instead of binaries in the PATH.
+- **Stability:** Added a restart protection mechanism to prevent multiple self-restarts in a single process.
+
 ## [0.1.7] - 2026-03-27
 
 ### Added
