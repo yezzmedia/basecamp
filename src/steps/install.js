@@ -5,7 +5,71 @@
  */
 
 import pc from 'picocolors';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { run } from '../lib/utils.js';
+
+function getYezzmediaPackageVersion(packageName) {
+    const versions = {
+        'yezzmedia-access': '^0.2',
+        'yezzmedia-foundation': '^0.1.1',
+        'yezzmedia-ops': '^0.1.1',
+        'yezzmedia-ops-analytics': '^0.1.4',
+        'yezzmedia-ops-backups': '^0.1.1',
+        'yezzmedia-ops-infrastructure': '^0.1',
+        'yezzmedia-ops-security': '^0.1.3',
+        'yezzmedia-ops-sites': '^0.1.1',
+    };
+
+    return versions[packageName] ?? '^0.1';
+}
+
+function ensureAdminPanelProviderRegistered(project) {
+    const providersPath = `${project}/bootstrap/providers.php`;
+
+    if (!existsSync(providersPath)) {
+        return;
+    }
+
+    const content = readFileSync(providersPath, 'utf8');
+
+    if (content.includes('App\\Providers\\Filament\\AdminPanelProvider::class')) {
+        return;
+    }
+
+    writeFileSync(
+        providersPath,
+        content.replace('];', '    App\\Providers\\Filament\\AdminPanelProvider::class,\n];'),
+    );
+}
+
+function ensureAdminPanelIsDefault(project, isVerbose) {
+    const panelProviderPath = `${project}/app/Providers/Filament/AdminPanelProvider.php`;
+
+    if (!existsSync(panelProviderPath)) {
+        return;
+    }
+
+    const content = readFileSync(panelProviderPath, 'utf8');
+
+    if (content.includes('->default()')) {
+        return;
+    }
+
+    const updatedContent = content.replace(
+        /return \$panel(\r?\n)(\s+)->/,
+        'return $panel$1$2->default()$1$2->',
+    );
+
+    if (updatedContent === content) {
+        if (isVerbose) {
+            console.warn(pc.yellow(`\n[Basecamp] Warning: Could not mark AdminPanelProvider as the default panel automatically.`));
+        }
+
+        return;
+    }
+
+    writeFileSync(panelProviderPath, updatedContent);
+}
 
 export async function performInstallation(args, setupData, configData, s) {
     const { isVerbose, isNonInteractive } = args;
@@ -54,28 +118,28 @@ export async function performInstallation(args, setupData, configData, s) {
         let devReqs = [];
         
         // Mapping
-        if (packagesToInstall.includes('filament')) reqs.push('filament/filament:"^5.0" -W');
-        if (packagesToInstall.includes('laravel-ai')) reqs.push('laravel/ai');
-        if (packagesToInstall.includes('openai')) reqs.push('openai-php/laravel');
-        if (packagesToInstall.includes('permission')) reqs.push('spatie/laravel-permission');
-        if (packagesToInstall.includes('pennant')) reqs.push('laravel/pennant');
-        if (packagesToInstall.includes('pulse')) reqs.push('laravel/pulse');
-        if (packagesToInstall.includes('horizon')) reqs.push('laravel/horizon');
-        if (packagesToInstall.includes('socialite')) reqs.push('laravel/socialite');
-        if (packagesToInstall.includes('volt')) reqs.push('livewire/volt');
-        if (packagesToInstall.includes('backup')) reqs.push('spatie/laravel-backup');
-        if (packagesToInstall.includes('medialibrary')) reqs.push('spatie/laravel-medialibrary');
-        if (packagesToInstall.includes('activitylog')) reqs.push('spatie/laravel-activitylog');
+        if (packagesToInstall.includes('filament')) reqs.push('"filament/filament:^5.0"');
+        if (packagesToInstall.includes('laravel-ai')) reqs.push('"laravel/ai"');
+        if (packagesToInstall.includes('openai')) reqs.push('"openai-php/laravel"');
+        if (packagesToInstall.includes('permission')) reqs.push('"spatie/laravel-permission"');
+        if (packagesToInstall.includes('pennant')) reqs.push('"laravel/pennant"');
+        if (packagesToInstall.includes('pulse')) reqs.push('"laravel/pulse"');
+        if (packagesToInstall.includes('horizon')) reqs.push('"laravel/horizon"');
+        if (packagesToInstall.includes('socialite')) reqs.push('"laravel/socialite"');
+        if (packagesToInstall.includes('volt')) reqs.push('"livewire/volt"');
+        if (packagesToInstall.includes('backup')) reqs.push('"spatie/laravel-backup"');
+        if (packagesToInstall.includes('medialibrary')) reqs.push('"spatie/laravel-medialibrary"');
+        if (packagesToInstall.includes('activitylog')) reqs.push('"spatie/laravel-activitylog"');
 
         // Yezzmedia Suite Mapping
-        if (packagesToInstall.includes('yezzmedia-foundation')) reqs.push('yezzmedia/laravel-foundation:"^0.1"');
-        if (packagesToInstall.includes('yezzmedia-access')) reqs.push('yezzmedia/laravel-access:"^0.1"');
-        if (packagesToInstall.includes('yezzmedia-ops')) reqs.push('yezzmedia/laravel-ops:"^0.1"');
-        if (packagesToInstall.includes('yezzmedia-ops-infrastructure')) reqs.push('yezzmedia/laravel-ops-infrastructure:"^0.1"');
-        if (packagesToInstall.includes('yezzmedia-ops-security')) reqs.push('yezzmedia/laravel-ops-security:"^0.1"');
-        if (packagesToInstall.includes('yezzmedia-ops-sites')) reqs.push('yezzmedia/laravel-ops-sites:"^0.1"');
-        if (packagesToInstall.includes('yezzmedia-ops-analytics')) reqs.push('yezzmedia/laravel-ops-analytics:"^0.1"');
-        if (packagesToInstall.includes('yezzmedia-ops-backups')) reqs.push('yezzmedia/laravel-ops-backups:"^0.1"');
+        if (packagesToInstall.includes('yezzmedia-foundation')) reqs.push(`"yezzmedia/laravel-foundation:${getYezzmediaPackageVersion('yezzmedia-foundation')}"`);
+        if (packagesToInstall.includes('yezzmedia-access')) reqs.push(`"yezzmedia/laravel-access:${getYezzmediaPackageVersion('yezzmedia-access')}"`);
+        if (packagesToInstall.includes('yezzmedia-ops')) reqs.push(`"yezzmedia/laravel-ops:${getYezzmediaPackageVersion('yezzmedia-ops')}"`);
+        if (packagesToInstall.includes('yezzmedia-ops-infrastructure')) reqs.push(`"yezzmedia/laravel-ops-infrastructure:${getYezzmediaPackageVersion('yezzmedia-ops-infrastructure')}"`);
+        if (packagesToInstall.includes('yezzmedia-ops-security')) reqs.push(`"yezzmedia/laravel-ops-security:${getYezzmediaPackageVersion('yezzmedia-ops-security')}"`);
+        if (packagesToInstall.includes('yezzmedia-ops-sites')) reqs.push(`"yezzmedia/laravel-ops-sites:${getYezzmediaPackageVersion('yezzmedia-ops-sites')}"`);
+        if (packagesToInstall.includes('yezzmedia-ops-analytics')) reqs.push(`"yezzmedia/laravel-ops-analytics:${getYezzmediaPackageVersion('yezzmedia-ops-analytics')}"`);
+        if (packagesToInstall.includes('yezzmedia-ops-backups')) reqs.push(`"yezzmedia/laravel-ops-backups:${getYezzmediaPackageVersion('yezzmedia-ops-backups')}"`);
 
         if (packagesToInstall.includes('telescope')) devReqs.push('laravel/telescope');
         if (packagesToInstall.includes('debugbar')) devReqs.push('barryvdh/laravel-debugbar');
@@ -89,7 +153,13 @@ export async function performInstallation(args, setupData, configData, s) {
             }
 
             // Post-install artisan commands
-            if (packagesToInstall.includes('filament')) try { await run(`php artisan filament:install --panels -n`, project, isVerbose); } catch(e){}
+            if (packagesToInstall.includes('filament')) {
+                try { 
+                    await run(`php artisan filament:install --panels -n`, project, isVerbose); 
+                    ensureAdminPanelProviderRegistered(project);
+                    ensureAdminPanelIsDefault(project, isVerbose);
+                } catch(e){}
+            }
             if (packagesToInstall.includes('telescope')) try { await run(`php artisan telescope:install`, project, isVerbose); } catch(e){}
             if (packagesToInstall.includes('pennant')) try { await run(`php artisan vendor:publish --provider="Laravel\\Pennant\\PennantServiceProvider"`, project, isVerbose); } catch(e){}
             if (packagesToInstall.includes('pulse')) try { await run(`php artisan pulse:install`, project, isVerbose); } catch(e){}
@@ -128,8 +198,9 @@ export async function performInstallation(args, setupData, configData, s) {
             if (!isVerbose) s.stop('Packages installed successfully!');
             else console.log(pc.green(`[Basecamp] Package installation completed!`));
         } catch (error) {
-            if (!isVerbose) s.stop('Warning: Package installation had errors.');
-            console.error(pc.red(error.message));
+            if (!isVerbose) s.stop(pc.red('Critical: Package installation failed.'));
+            console.error(pc.red(`\n[Basecamp] Installation aborted: ${error.message}`));
+            process.exit(1);
         }
     }
 }

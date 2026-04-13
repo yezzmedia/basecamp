@@ -31,17 +31,6 @@ export async function performFinish(args, setupData, configData, s) {
     }
 
     /**
-     * FILAMENT ADMIN CREATION
-     */
-    if (migrationSuccessful && packagesToInstall.includes('filament')) {
-        if (!isVerbose) s.message = 'Creating Filament Admin user...';
-        else console.log(pc.blue(`\n[Basecamp] STEP 6.5: Creating Filament Admin user...`));
-        try {
-            await run(`php artisan make:filament-user --name=Admin --email="${adminEmail}" --password="${adminPassword}"`, project, isVerbose);
-        } catch (e) {}
-    }
-
-    /**
      * FRONTEND BUILD
      */
     if (!isVerbose) s.message = 'Running frontend build...';
@@ -97,6 +86,25 @@ export async function performFinish(args, setupData, configData, s) {
     }
 
     /**
+     * FILAMENT ADMIN CREATION
+     */
+    if (migrationSuccessful && packagesToInstall.includes('filament')) {
+        if (!isVerbose) s.message = 'Creating Filament Admin user...';
+        else console.log(pc.blue(`\n[Basecamp] STEP 6.5: Creating Filament Admin user...`));
+
+        const panelProviderPath = `${project}/app/Providers/Filament/AdminPanelProvider.php`;
+        if (existsSync(panelProviderPath)) {
+            try {
+                await run(`php artisan make:filament-user --name=Admin --email="${adminEmail}" --password="${adminPassword}"`, project, isVerbose);
+            } catch (e) {
+                if (isVerbose) console.error(pc.red(`\n[Basecamp] Error creating Filament admin: ${e.message}`));
+            }
+        } else if (isVerbose) {
+            console.warn(pc.yellow(`\n[Basecamp] Warning: AdminPanelProvider not found at ${panelProviderPath}. Skipping user creation.`));
+        }
+    }
+
+    /**
      * YEZZMEDIA SUITE SETUP
      */
     const hasYezzmedia = packagesToInstall.some(p => p.startsWith('yezzmedia-'));
@@ -105,19 +113,22 @@ export async function performFinish(args, setupData, configData, s) {
         else console.log(pc.blue(`\n[Basecamp] STEP 7.8: Configuring Yezzmedia Suite...`));
 
         try {
-            // 1-4: Install, Migrate, Audit, Middleware Bridge
-            await run(`php artisan website:install --migrate --configure-audit --audit-package=all --configure-http-middleware-bridge --no-interaction`, project, isVerbose);
+            // 1: Prepare the platform install and access store before follow-up commands.
+            await run(`php artisan website:install --migrate --configure-http-middleware-bridge --no-interaction`, project, isVerbose);
             
-            // 5: Sync Permissions
+            // 2: Sync Permissions
             await run(`php artisan website:sync-permissions --no-interaction`, project, isVerbose);
             
-            // 6: Seed Roles
+            // 3: Seed Roles
             await run(`php artisan website:seed-roles --no-interaction`, project, isVerbose);
+
+            // 4: Configure audit persistence after the package install surfaces are ready.
+            await run(`php artisan website:install --configure-audit --audit-package=all --no-interaction`, project, isVerbose);
             
-            // 7: Grant Ops Access
-            await run(`php artisan website:grant-ops-access "${adminEmail}" --no-interaction`, project, isVerbose);
+            // 5: Assign the initial super-admin bootstrap user.
+            await run(`php artisan website:assign-super-admin "${adminEmail}" --no-interaction`, project, isVerbose);
             
-            // 8: Doctor Check
+            // 6: Doctor Check
             await run(`php artisan website:doctor --no-interaction`, project, isVerbose);
 
             if (!isVerbose) s.message = 'Yezzmedia Suite configured!';
@@ -198,7 +209,7 @@ export async function performFinish(args, setupData, configData, s) {
     /**
      * FINAL SUMMARY
      */
-    console.clear();
+    if (!isVerbose) console.clear();
     intro(pc.bgGreen(pc.black(' ⛺ Basecamp - Installation Successful! ')));
 
     const summaryData = [
