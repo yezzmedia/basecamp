@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.11] - 2026-04-13
+
+### Fixed
+- **Package Bootstrap Surface:** Replaced the host-only `website:grant-ops-access` installer call with the released package command `website:assign-super-admin` so generated projects bootstrap the first privileged user through package-owned runtime behavior.
+- **Yezzmedia Version Matrix:** Pinned the Yezzmedia installer requirements to the current compatible released package versions instead of broad wildcard constraints that could resolve stale package releases.
+- **Install Flow:** Separated the normal Yezzmedia `website:install --migrate` path from the audit-only configuration step so permission store setup and role bootstrap happen in the correct order.
+
+## [0.1.10] - 2026-03-27
+
+### Fixed
+- **Filament Registration:** Manually ensured `AdminPanelProvider` is registered in `bootstrap/providers.php` after installation. Newer Laravel versions (like v13) can sometimes fail to automatically register the provider, leading to a `NoDefaultPanelSetException` during user creation.
+
+## [0.1.9] - 2026-03-27
+
+### Fixed
+- **Composer Syntax:** Corrected the package requirement syntax in `src/steps/install.js` by wrapping package identifiers in double quotes. This prevents shell expansion issues and ensures compatibility with Composer's stricter parsing when using version constraints like `^0.1`.
+
 ## [0.1.8] - 2026-03-27
 
 ### Added
